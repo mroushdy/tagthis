@@ -1,0 +1,6 @@
+RewriteEngine On
+
+RewriteCond %{REQUEST_URI} !^/users/$ 
+RewriteCond %{HTTP_HOST} !^www\.localhost:1949
+RewriteCond %{HTTP_HOST} ^([^.]+)\.localhost:1949 
+RewriteRule .* /users/%1 [L] 

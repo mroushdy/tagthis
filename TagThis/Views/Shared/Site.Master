@@ -1,0 +1,2690 @@
+<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+<%@ Import Namespace="AjaxControlToolkitMvc" %> 
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" >
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml">  
+
+<head runat="server" prefix="og: http://ogp.me/ns# sixtysongs: http://ogp.me/ns/apps/sixtysongs#">
+    <title><asp:ContentPlaceHolder ID="TitleContent" runat="server" /></title>
+    <meta property="fb:app_id" content='246834058684710' /> 
+
+    <meta name="description" content="Sixtysongs lets you share music, discover new songs, appreciate what others share, and interact in the name of music." />
+
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.9.0/build/reset/reset-min.css">
+
+
+    <link href="../../Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/videoplayer.css" rel="stylesheet" type="text/css" />
+    <link href="../../Scripts/tipsy.css" rel="stylesheet" type="text/css" />
+
+    <script src="../../Scripts/MicrosoftAjax.js" type="text/javascript"></script>
+	<script src="../../Scripts/MicrosoftMvcAjax.js" type="text/javascript"></script>
+	<script src="../../Scripts/jquery-1.4.1.min.js"type="text/javascript"></script>
+    <script src="../../Scripts/jquery.unobtrusive-ajax.min.js"type="text/javascript"></script>
+    <script src="../../Scripts/jquery.masonry.min.js"></script>
+    <script src="../../Scripts/jquery.imagesloaded.js"></script>
+    <script src="../../Scripts/jquery.history.js"></script>
+    <script src="../../Scripts/jquery.swfobject.2.2.js"></script>
+    <script src="../../Scripts/jquery.videoplayer.js?<%=DateTime.Now.Ticks %>"></script>
+    <script src="../../Scripts/jquery.tipsy.js"></script>
+    <script src="../../Scripts/jquery.coolscroll.js"></script>
+    <script src="../../Scripts/jquery-ui.min.js"></script>
+
+
+<script type="text/javascript">
+
+
+    // Load the SDK Asynchronously
+    (function (d) {
+        var js, id = 'facebook-jssdk'; if (d.getElementById(id)) { return; }
+        js = d.createElement('script'); js.id = id; js.async = true;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        d.getElementsByTagName('head')[0].appendChild(js);
+    } (document));
+    
+
+    <%
+    if (Request.IsAuthenticated) {
+        TagThis.Models.UserRepository upr = new TagThis.Models.UserRepository();
+        %>
+    //send invite dialogue
+
+
+    function callAppReq() {
+        FB.init({appId: '<%= Facebook.FacebookApplication.Current.AppId%>', xfbml: true, cookie: true});
+
+        //checks if the user is logged in if so then popup the dialogue if not then promt pogin
+        FB.getLoginStatus(function(response) {
+            if (response.status === 'connected') {
+            
+            OpenSendDialogue();
+
+             } else if (response.status === 'not_authorized') {
+    // the user is logged in to Facebook, 
+    // but has not authenticated your app
+            } else {
+
+            FB.login(function(response) {
+                if (response.authResponse) {
+                    
+                    OpenSendDialogue();
+
+                }
+                });
+
+            }
+            });
+    }
+
+        function callpublishtofeed(element) {
+        FB.init({appId: '<%= Facebook.FacebookApplication.Current.AppId%>', xfbml: true, cookie: true});
+
+        //checks if the user is logged in if so then popup the dialogue if not then promt pogin
+        FB.getLoginStatus(function(response) {
+            if (response.status === 'connected') {
+            
+            OpenPublishDialogue(element);
+
+             } else if (response.status === 'not_authorized') {
+    // the user is logged in to Facebook, 
+    // but has not authenticated your app
+            } else {
+
+            FB.login(function(response) {
+                if (response.authResponse) {
+                    
+                    OpenPublishDialogue(element);
+
+                }
+                });
+
+            }
+            });
+    }
+
+    function OpenPublishDialogue(element)
+    {
+    var link = 'http://www.sixtysongs.com/post/'+ $(element).attr('data-postid').toString();
+
+                                FB.ui({
+                                method: 'feed',
+                                display: 'iframe',
+                                show_error: 'true',
+                                link: link,
+                                app_id: '<%= Facebook.FacebookApplication.Current.AppId%>',
+                                access_token: '<%= upr.GetAccesToken() %>'});
+    }
+
+    
+    function OpenSendDialogue()
+    {
+                                FB.ui({
+                                method: 'send',
+                                display: 'iframe',
+                                show_error: 'true',
+                                link: 'http://www.sixtysongs.com/',
+                                app_id: '<%= Facebook.FacebookApplication.Current.AppId%>',
+                                access_token: '<%= upr.GetAccesToken() %>'});
+    }
+
+        function PostListenToFB(pid)
+        {
+        <%      if (upr.GetUserData().FBautopost)
+                { %>
+
+        var poststring = '/me/sixtysongs:listen_to?song=http://www.sixtysongs.com/Post/'+pid.toString()+'&access_token=<%= upr.GetAccesToken() %>'
+        FB.init({
+            appId  : <%= Facebook.FacebookApplication.Current.AppId%>, // the app ID you get when you register your app in http://www.facebook.com/developers/
+            status : true, // check login status
+            cookie : true, // enable cookies to allow the server to access the session
+            xfbml  : true  // parse XFBML
+         });
+
+         FB.api(
+        poststring,
+        'post',
+        function (response) {
+            if (!response || response.error) {} else {}
+        });
+
+        <%} %>
+    }
+
+    <%} %>
+
+
+//ajax links hijaxing
+ (function (window, undefined) {
+
+     // Prepare our Variables
+     var History = window.History;
+
+     // Check to see if History.js is enabled for our Browser
+     if (!History.enabled) { return false; }
+
+     // Bind to StateChange Event
+     History.Adapter.bind(window, 'statechange', function () { // Note: We are using statechange instead of popstate
+         var State = History.getState(); // Note: We are using History.getState() instead of event.state
+     });
+
+ })(window);
+
+
+//link hijax
+ $(function () {
+     $(".ajax").live("click", function () { var el = this; var url = $(el).attr("href"); DoHijaxing(url); return false;});
+     $('#srch-form').submit(function () { addsearchbit(); var el = this; var url = $(el).attr("action") +"?"+ $(this).serialize(); DoHijaxing(url); return false;});
+ });
+
+
+
+     function DoHijaxing(url) {
+
+
+        History.pushState(null, null, ("/"+url).toString().replace("//","/"));
+
+        $('#MainLoading').show();
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'html',
+            success: function (result) {
+                $('div#contentCol').html(result);
+                $('#MainLoading').hide();
+            }
+        });
+    }
+
+//end ajax hijaxing
+
+
+function Like(element) {
+    var postid = $(element).attr('data-postid');
+    var pageid = $(element).attr('data-pid');
+    var linktext = $(element).text().toString().trim();
+    var rating = $('#likes'+postid.toString()).text();
+    var r = parseInt(rating);
+    if (linktext == "Like") {
+        $(element).text('Unlike');
+        r = r + 1;
+    }
+    else {
+        $(element).text('Like');
+        r = r - 1;
+    }
+    $('#likes'+postid.toString()).text(r.toString());
+
+    var url = '<%= Url.Action("LHF", "Ajax", new { value = "l"}) %>'+"&pid="+pageid.toString()+"&postid="+postid.toString();
+    $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'html',
+        success: function (result) {}
+
+    });
+}
+
+function GetNotifications() {
+
+    if ($('.notifications .container').is(":visible")) {
+        setTimeout(GetNotifications, 1000);
+    }
+    else {
+        var url = '<%= Url.Action("GetNotifications", "Ajax", new {}) %>';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'html',
+            success: function (result) { $('#notificationscontainer').html(result); BlackSroll(); setTimeout(GetNotifications, 30000); }
+
+        });
+    }
+}
+
+
+$('.notifications .linkcontainer').live("mouseover",function () {
+    var url = '<%= Url.Action("ReadNotifications", "Ajax", new {}) %>';
+    $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'html',
+        success: function (result) { }
+    });
+});
+
+
+//triggers live tool tip if it has data-tooltip
+$('a[data-tooltip]').tipsy({gravity: $.fn.tipsy.autoWE, fade: true,title: 'data-tooltip', live: 'true'});
+
+
+
+function BlackSroll() {
+    $('.mousescrollblack').slimscroll({
+        size: '7px',
+        wheelStep: 10,
+        alwaysVisible: true,
+        scroll: '0px'
+    });
+}
+
+function ModalShow(mid) {
+    $('#' + mid).addClass('visible').show();
+    rePositionModal(mid);
+        //document.body.style.overflow = 'hidden';
+    }
+
+    function ModalHide(mid) {
+        $('#' + mid).removeClass('visible').hide();
+        //$("body").css("overflow", "auto");
+    }
+    
+    
+    $(function () {masonry();});
+
+
+    
+
+
+  function masonry() {
+        try {
+
+            $('#resultcontent').masonry('destroy');
+
+            $('#resultcontent').masonry({ isFitWidth: true });
+
+
+            var $container = $('#resultcontent');
+
+            $container.imagesLoaded(function () {
+                $container.masonry({ isFitWidth: true });
+            });
+        }
+        catch (err) { }
+
+    }
+
+
+
+    function DelayedMasonry() { setTimeout(masonry, 500); }
+
+
+    function ajaxmasonry() {
+    try{
+        var $container = $('#resultcontainer');
+
+        $container.imagesLoaded(function () {
+            $container.masonry({isFitWidth:true});
+        });
+
+        }
+        catch(err){}
+
+    }
+</script>
+	    <!-- required stylesheet for TextboxList -->
+		<link rel="stylesheet" href="../../Scripts/TextboxList.css" type="text/css" media="screen" charset="utf-8" />
+		<link rel="stylesheet" href="../../Scripts/TextboxList.Autocomplete.css" type="text/css" media="screen" charset="utf-8" /> 
+
+		<!-- required for TextboxList -->
+		<script src="../../Scripts/GrowingInput.js" type="text/javascript" charset="utf-8"></script>
+				
+		<script src="../../Scripts/TextboxList.js" type="text/javascript" charset="utf-8"></script>	
+				<script src="../../Scripts/TextboxList.Autocomplete.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../Scripts/TextboxList.Autocomplete.Binary.js" type="text/javascript" charset="utf-8"></script>
+    
+                        <script type="text/javascript" charset="utf-8">
+
+                        var search;
+
+                            function FBlogout()
+                            {
+                             FB.logout(function(response) {});
+                            }
+
+                            var once = 3;
+                            var inside = 0;
+                            
+                            $(document).ready(function () {
+
+                                       BlackSroll();
+
+                            		        <%
+                    if (Request.IsAuthenticated)
+                    {
+                        %>	
+                    
+                                                GetNotifications();
+                                                <%} %>
+
+                 
+
+                                //this is set to 0 when the share link is clicked to fix some bugs of reloading the partial resutls using ajax
+                                
+
+
+                                search = new TextboxList('#Simple', { unique: true, bitsOptions: { editable: { addKeys: 32 }, addOnBlur: true }, plugins: { autocomplete: { minLength: 3, queryRemote: true, remote: { url: '../../content/TagSuggestHandler.ashx'}}} });
+
+                                
+                                
+                                //submit search form on enter press
+                                $('#search').find('li:last input').keyup(function(e)
+	                            {
+                                    if ((e.keyCode || e.which) == 13)
+                                    {
+                                    $('#srch-form').submit();
+                                    }
+                                });
+
+                               		
+
+                                //grab all the anchor tag with rel set to shareit
+                                $('a[rel=shareit]').live("click",
+                                function () {
+                                    showsocialbox(this);
+                                });
+
+                            });
+
+
+
+                        function addsearchbit() {
+
+                             var ts = $('#search').find('li:last input').val();
+                             $('#search').find('li:last input').val('');
+                             search.add(ts);
+                         }
+
+                        function addsearchterm(t) {
+                             search.add(t);
+                         }
+
+                          function clearsearchbox() {
+                           $('#search').find('li:last input').val('');
+                            $('#search').blur();
+                           $('#search').find('li:not(.textboxlist-bit-editable)').remove();
+                         }
+
+
+                            function showsocialbox(m){
+
+                                    //grab the href value and explode the bar symbol to grab the url and title
+                                    var value = $(m).attr('url');
+
+                                    //get the parent of the link
+                                    m = $(m).parents('.result')[0];
+
+                                    var top = 0;
+                                    var left = 0;
+                                    if(m)
+                                    {
+                                    top = $(m).offset().top + 15;
+                                    left = $(m).offset().left + 15;
+                                    }
+                                    else
+                                    {
+                                     top = $('#window').offset().top + 15 + 20;
+                                     left = $('#window').offset().left + 15;
+                                     var width = $('#window').width() - 30;
+                                     
+                                     $('#shareit-box').width(width);
+                                    }
+                                    
+                                    var height = 20;
+
+
+
+                                    if (top != $('#shareit-box').offset().top && left != $('#shareit-box').offset().left) { inside = 0; }
+
+
+
+                                    //assign the value to variables and encode it to url friendly
+                                    var field = value;
+                                    var url = encodeURIComponent(value);
+
+
+                                    //assign the height for the header, so that the link is cover
+                                    $('#shareit-header').height(height);
+
+                                    //set the position, the box should appear under the link and centered
+                                    $('#shareit-box').css({ 'top': top, 'left': left });
+
+                                    //assign the url to the textfield
+                                    $('#shareitfield').val(field);
+
+                                    //display the box
+                                    $('#shareit-box').fadeIn('slow');
+
+
+                                    if (inside == 0) {
+                                        $('#socialloading').show();
+
+                                        $('#shareframe').attr('src', '../../socialframe?url=' + url);
+                                        $("#shareframe").load(function () {
+                                            $('#socialloading').hide();
+                                            $("#shareframe").show();
+                                        });
+
+                                        inside = 1;
+                                    }
+
+
+
+
+
+                                    //onmouse out hide the shareit box
+                         
+                                $('#shareit-box-close').click(function () {
+                                    $('#shareitfield').val('');
+                                    $("#shareframe").hide();
+                                    $("#shareit-box").hide();
+                                    inside = 0;
+                                });
+
+                                
+                                //fixes share link bug of reloading through ajax
+                                if (once == 0) {
+                                    $('a[rel=shareit], #shareit-box').mouseenter(function () {
+                                        once = 1;
+                                        showsocialbox(this);
+                                    });
+                                }
+
+                                //hightlight the textfield on click event
+                                $('#shareitfield').click(function () {
+                                    $(this).select();
+                                });
+                            
+                            }
+
+             function toggleLayer(whichLayer) {
+                 $('#' + whichLayer).toggle('slow');
+             }
+
+
+             function toggle(whichLayer) {
+                 $('#' + whichLayer).toggle();
+             }
+
+             function remove(whichLayer){
+             
+                $('#' + whichLayer).remove();
+             
+             }
+
+
+             //reposition info box
+             jQuery(document).ready(function(){
+
+                $(window).mousemove(function(e){
+                    //window.mouseXPos = e.pageX;
+                    $.data(this, 'mouseXPos', e.pageX);
+                }); 
+
+
+                $('.infobox').live("mouseover mouseout", function(event) {
+                    if (event.type == "mouseover") {
+                        $.data(this, 'hover', true);
+                    } else {
+                        $.data(this, 'hover', false);
+                    }
+                 }).data('hover', false);
+
+
+
+                $('.result').live("mouseover",function() {
+                 if($(this).find('.infobox').data('hover') != true)
+                 {
+                    var left = "230px";
+                    var mouseX = $(window).data('mouseXPos'); //window.mouseXPos
+                    if( mouseX > ($(window).width()/2)){left = "-200px"};
+                    $(this).find('.infobox').css('left',left);
+                 }
+               });
+
+            });
+
+	    </script>
+		
+
+
+
+        <!--inline label-->
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+
+			//part of hijaxing. fixes on refresh to redirect to the right url
+			if(window.location.hash){
+			var hash = window.location.hash;
+				hash = hash.replace("#.","#").substring(1);
+			  	if(hash != "_=_")
+				{
+				$('#contentCol').html('');
+				DoHijaxing();
+				}
+			}
+
+
+                doinline();
+
+
+                //invalid name call
+                $('.mousescroll').slimscroll({
+                    color: '#fff',
+                    size: '10px'
+                });
+
+            });
+
+            function doinline() 
+            {
+
+                $('input[title]').each(function () {
+                    if ($(this).val() === '') { $(this).val($(this).attr('title')); }
+
+                    $(this).focus(function () {
+                        if ($(this).val() === $(this).attr('title')) { $(this).val(''); }
+                    });
+
+                    $(this).blur(function () {
+                        if ($(this).val() === '') { $(this).val($(this).attr('title')); }
+                    });
+                });
+
+
+                $('textarea[title]').each(function () {
+                    if ($(this).val() === '') { $(this).val($(this).attr('title')); }
+
+                    $(this).focus(function () {
+                        if ($(this).val() === $(this).attr('title')) { $(this).val(''); }
+                    });
+
+                    $(this).blur(function () {
+                        if ($(this).val() === '') { $(this).val($(this).attr('title')); }
+                    });
+                });
+            }
+        </script>
+
+
+
+
+        <!--sharemodal-->
+                     <script type="text/javascript" charset="utf-8">
+
+                         //t2 is the tagbox in the add song dialogue
+                         var t2;
+
+                         //people box is the box to suggest song to some people.
+                         var peoplebox;
+
+                         function addbit() {
+
+                             var a = $('#s-t-box').find('li:last input').val();
+                             $('#s-t-box').find('li:last input').val('');
+                             t2.add(a);
+                         }
+
+
+
+                         function finishsettings() {
+
+                             //remove loading element
+                             $('#onesec').hide(); $('#set-link').show();
+
+                             if ($('#seterror:contains("none")').length > 0) {
+                                 //no error;
+                                 //close the sharebox
+                                 ModalHide('SettingsModal');
+                                 doinline();
+                                 $('#seterror').text('');
+
+                             }
+                             else {
+                                 //there is an error                            
+                             }
+
+                         }
+
+
+                         function finishshare() {
+
+                             //remove loading element
+                             $('#onesec').hide(); $('#s-link').show();
+
+                             if ($('#s-error:contains("none")').length > 0) {
+                                 //no error;
+                                 //close the sharebox
+                                 ModalHide('AddModal');
+                                 
+
+                                 //The New Post is added to a temp div called NewPost inside s-p-result javascript will fetch the new post and add it to the view
+                                 var NewPost = $('#s-p-result').html();
+                                 $('#NewPost').empty();
+                                 $('#resultcontent').prepend(NewPost);
+                                 DelayedMasonry();
+
+                                 ResetAddModal();
+                             }
+                             else {
+                                 //there is an error                            
+                                 //get error message
+                                 $('#error').text($('#s-error').text());
+                             }
+
+                             //delete the s-error div
+                             $('#s-error').remove();
+                         }
+
+
+                         $(document).ready(function () {
+
+
+                             peoplebox = new TextboxList('#People', { unique: true, bitsOptions: { editable: { addKeys: 32 }, addOnBlur: true }, plugins: { autocomplete: { minLength: 3, queryRemote: true, remote: { url: '../../content/PeopleSuggestHandler.ashx'}}} });
+
+                             //autocomplete size fix
+                             $('#p-t-box .textboxlist-autocomplete').width('400px');
+
+
+                             t2 = new TextboxList('#Tags', { unique: true, bitsOptions: { editable: { addKeys: 32 }, addOnBlur: true }, plugins: { autocomplete: { minLength: 3, queryRemote: true, remote: { url: '../../content/TagSuggestHandler.ashx'}}} });
+                             
+                             //autocomplete size fix
+                             $('#s-t-box .textboxlist-autocomplete').width('400px');
+
+
+                            
+                         });
+
+                         function ResetAddModal() {
+
+                             //resets some tagbox things
+                             $('#s-t-box').hide();
+                             $('#tags-box').show();
+                             $('#p-t-box').hide();
+                             $('#peoplebox').show();
+                             $('#desc').val('');
+                             $('#url').val('');
+                             $('#RepostedFrom').val('');
+                             $('#Genre').find("option:first").attr("selected", true);
+                             $('#AddModalDown #error').text('');
+
+
+                             //deletes the text inside tagbox that hasnt became a tag yet
+                             $('#s-t-box').find('li:last input').val('');
+
+                             //deletes the text inside peoplebox that hasnt became a tag yet
+                             $('#p-t-box').find('li:last input').val('');
+
+                             //removes all bits from the tagbox
+                             $('#s-t-box').find('li:not(:last)').remove();
+
+
+                             //removes all bits from the peoplbox
+                             $('#p-t-box').find('li:not(:last)').remove();
+
+                             //remove the preview and go back to the url box
+                             $('#preurl').val('');
+                             $("#preurlattach").show(); 
+                             $("#preurlloader").hide();
+                             $('#preurlerror').text("");
+                             $('#preurlcontainer').show();
+                             $('#addform').hide();
+
+                             doinline();
+                         }
+
+
+                         function deletepost(element) {
+                             postid = $(element).attr('data-postid');
+                             ModalShow('DeletePostModal');
+                             $("#DeletePostId").val(postid);
+                         }
+
+
+                         function deletecomment(element) {
+                             commentid = $(element).attr('data-commentid');
+                             ModalShow('DeleteCommentModal');
+                             $("#DeleteCommentId").val(commentid);
+                         }
+
+
+                         function repost(element) {
+                             url = $(element).attr('data-url');
+                             postid = $(element).attr('data-postid');
+                             ModalShow('AddModal');
+                             $("#preurl").val(url);
+                             $('#RepostedFrom').val(postid);
+                             attachurl();
+                         }
+
+var videoID =""; 
+
+     function attachurl(){
+
+         $("#preurlattach").hide(); $("#preurlloader").show();
+         var url = $("#preurl").val();
+         var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
+         var match = url.match(regExp);
+
+         //checks if youtube
+         if (match && match[2].length == 11) {
+
+             videoID = match[2];
+
+            $("#url").val(url);
+                $.ajax({
+                        url: "http://gdata.youtube.com/feeds/api/videos/"+ videoID +"?v=2&alt=jsonc",
+                        dataType: "jsonp",
+                        success: function (data) { parseresults(data); }
+                });
+         }
+         else
+         {
+            $("#preurlattach").show(); $("#preurlloader").hide();
+            $('#preurlerror').text("Currently we only support music from youtube. We will include more websites soon.");
+         }
+     }
+
+     function parseresults(data) {
+         var category = data.data.category;
+   
+                if(category == "Music") {
+                    var title = TextAbstract(data.data.title,120);
+                    var description = TextAbstract(data.data.description,200);
+                  
+                    $('#movietitle').text(title);
+                    $('#moviedescription').text(description);
+                    $('#moviethumb').attr("src", "http://img.youtube.com/vi/" + videoID + "/1.jpg");
+                    $('#preurlcontainer').hide();
+                    $('#addform').fadeIn('slow');
+
+                    rePositionModal('AddModal');
+                }
+                else
+                {
+                    $("#preurlattach").show(); $("#preurlloader").hide();
+                    $('#preurlerror').text("It seems like this youtube video is not music.");
+                }
+                
+        }
+
+        function TextAbstract(text, length) {
+            if (text == null) {
+                return "";
+            }
+            if (text.length <= length) {
+                return text;
+            }
+            text = text.substring(0, length);
+            last = text.lastIndexOf(" ");
+            text = text.substring(0, last);
+            return text + "...";
+        }
+
+
+        function rePositionModal(mid) {
+            var mheight = $('#'+mid+' .modal').height();
+            var bottom = Math.round(mheight / 2);
+            var mwidth = $('#'+mid+' .modal').width();
+            var left = Math.round(mwidth / 2);
+            $('#'+mid+' .modal').css("margin-left", "-" + left.toString() + "px").css("margin-bottom", "-" + bottom.toString() + "px").css("height", mheight.toString()).css("width", mwidth.toString());
+        }
+
+
+
+        //infinity scroll
+        $(window).scroll(function () {
+
+            if ($(window).scrollTop() >= ($(document).height() - (2 * $(window).height()) ))
+
+                if ($(".showmorebutton").length > 0) {
+
+                    $(".showmorebutton a").click();
+                }
+                else {
+                    return false;
+                }
+
+        });
+
+
+</script>
+
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server" />
+
+<style type="text/css">
+
+
+a {
+    cursor: pointer;
+    text-decoration: none;
+    cursor: pointer;
+	font-family:Arial, Helvetica, sans-serif;
+    font-size: 12px;
+}
+
+
+html{
+    background-color: #f1f1f1;
+    height:100%;
+    }
+
+body {
+    color: #666666;
+    direction: ltr;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    text-align: left;
+    margin:0px;
+    height:100%;
+}
+
+#redbar {
+    background-color: #FFF;
+    margin:0px;
+    height: 44px;
+    position: fixed;
+    width: 100%;
+    z-index:100;
+    border-bottom: 1px solid #CDCDCD;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+
+
+#pageHead {
+    margin: 0;
+    width: 90%;
+	display: block;
+	padding-top: 7px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#pageLogo {
+    float: left;
+    margin-left: -6px;
+    z-index: 5;
+	margin:0;
+}
+
+#pageLogo a {
+
+    background-image: url("../../content/images/sixtysongs.png");
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    display: block;
+    height: 30px;
+    width: 170px;
+    margin-top: 2px;
+    background-color:transparent;
+}
+
+#sharebutton {
+    float: right;
+    z-index: 5;
+	margin:0;
+	margin-top:6px;
+}
+
+#sharebutton a {
+    background-color: #FFFF00;
+	background-image: url("share.png");
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    display: block;
+    height: 30px;
+    width: 140px;
+}
+
+.clearfix {
+    display: block;
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.content {
+	margin: 0;
+    padding: 0;
+}
+
+#headNav {
+    height: 30px;
+
+}
+
+
+.Wrap {
+    background: none repeat scroll 0 0 #FFFFFF;
+    color: #1A1A00;
+    cursor: text;
+    font: 11px "Lucida Grande",Verdana;
+
+
+}
+
+
+.bluelink {
+
+	background-color: rgb(6, 158, 236);
+	color: white !important;
+	cursor: pointer;
+	display: inline-block;
+	font: normal normal bold 18px/18px Verdana !important;
+	height: 18px;
+	padding: 5px 30px;
+}
+
+.outerWrap {
+    border: 1px solid #999999;
+    margin: 0;
+    overflow: hidden;
+    padding: 3px 4px 0;
+
+	   
+}
+
+.innerWrap {
+	border: 1px solid #FFFFFF;
+	float: left;
+    list-style-type: none;
+    margin: 0 5px 3px 0;
+    padding: 0;
+	width:100%;
+
+}
+
+
+.textBox {
+    border: 0 none;
+    font: 13px "arial";
+	color:#726666;
+    height: 14px;
+    padding: 2px 0;
+	outline:none;
+	
+	overflow: hidden;
+	resize:none;
+	width:100%;
+}
+
+ul {
+    list-style-type: none;
+	margin:0px;
+	padding:0px;
+	text-align:left;
+}
+
+li
+{
+height:18px;
+}
+
+   
+
+
+#contentCol {
+ width:100%;
+ margin:0px;
+ padding-top:44px;
+ float:left;
+}
+
+#resultcontent {
+ margin:30px 0;
+ margin-left:auto;
+ margin-right:auto; 
+}
+
+#playerCol {
+ margin-left:70%;
+ padding-top:44px;
+}
+
+.addbox{
+display: block;
+float: right;
+margin-bottom: 0px;
+margin-left: 0px;
+margin-right: 0px;
+margin-top: 0px;
+padding-bottom: 0px;
+padding-left: 0px;
+padding-right: 0px;
+padding-top: 0px;
+
+}
+
+/* start comments */
+
+span.thread-bg {
+    background: url("../../content/icons/home-comments-bg.png") no-repeat scroll 12px 0 transparent;
+    display: block;
+    height: 9px;
+    line-height: 9px;
+    margin-top: 5px;
+}
+
+
+.invisible {
+
+display:none;
+
+}
+
+
+.older-posts {
+    background-color: #E8E8E8;
+    border-left: 2px solid #FFFFFF;
+    border-right: 2px solid #FFFFFF;
+    border-top: 1px solid #FFFFFF;
+    margin: 0px -15px;
+    padding: 10px 15px;
+    text-align: center;
+}
+.older-posts a
+  {
+   color: #524D4D;
+    font-size: 12px;
+    font-weight: bold;
+      }
+
+
+/*.comment:first-child {
+    border-top: 1px solid #D9D4D4;
+}*/
+
+ .comment 
+ {
+    border-top: 1px solid #fff;
+    border-left: 2px solid #fff;
+    border-right: 2px solid #fff;
+    background-color: #e8e8e8;
+    margin: 0px -15px;
+    padding: 10px 15px;
+}
+
+
+
+a.img-link {
+
+    border: 0 none;
+    cursor: pointer;
+    text-decoration: none;
+
+}
+
+ .cimage {
+    float: left;
+    padding:0;
+    height: 36px;
+    width: 36px;
+}
+
+.info {
+    margin-left: 41px;
+    overflow: hidden;
+    position: relative;
+}
+
+/*end comments*/
+
+
+/* starts result css*/
+
+.resultsbar
+{
+    text-align: center;
+    background-color: #E8E8E8;
+    border-bottom: 1px solid #FFFFFF;
+    border-top: 1px solid #DDDDDD;
+    margin-top: 30px;
+    text-align: center;
+    position:relative; 
+}
+
+.result
+{
+    border: 1px solid #DeDeDe;
+    margin:5px;
+    padding: 15px 15px 0px;
+    background-color:#fff; 
+    width:200px;
+}
+
+.result-large
+{
+    width:400px;
+    margin:25px 0;
+}
+
+.result .ownername
+{
+   border-top: 1px solid #E0E0E0;
+    margin: 10px 0 0 -13px;
+    overflow: hidden;
+    padding: 10px 13px 5px;
+    width: 196px;
+}
+
+.post-container .ownername
+{
+    margin: -2px 0px 10px;
+    border-bottom: 1px solid #E0E0E0;
+        padding: 10px 0 5px 0;
+        border-top:none;
+        width:200px;
+}
+
+.result .ownername .cimage
+{
+    float:left;
+}
+
+.result .ownername .cimage img
+{
+    width:32px; height:32px;
+}
+
+.result .ownername .orighttop
+{
+    margin:-2px 0 0 41px;
+}
+
+.result .ownername .orighttop a
+{
+    font-weight:bold; color:#444; font-size:12px;
+}
+
+.result .ownername .orightdown
+{
+    margin:2px 0 0 0;
+    font-size:12px;
+}
+
+.result .ownerpost
+{
+    color:#777; font-size:12px; padding-bottom:10px;
+}
+
+
+.result .image-buttons-container
+{
+    width:200px;
+}
+
+.result-large .image-buttons-container
+{
+    width:400px;
+}
+
+.result .image-buttons-container .imagecontainer
+{
+    display:block; width:226px; height:130px; overflow:hidden; margin-left:-13px; position:relative; z-index:4;
+}
+
+.result-large .image-buttons-container .imagecontainer
+{
+    width:400px; height:260px; margin-left:0px;
+}
+
+.result .image-buttons-container .imagecontainer img
+{
+    position:relative; top:-26px; left:-7px; z-index:0;
+}
+
+.result-large .image-buttons-container .imagecontainer img
+{
+    top:-52px; left:-40px;
+}
+
+.result .title
+{
+    padding: 10px 0 0 0; width:190px; overflow:hidden; 
+}
+
+.result-large .title
+{
+    width:390px; padding: 0px 0px 10px 0;
+}
+
+.result .title a
+{
+font-weight:bold; color:#000; font-family:  'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:14px;
+}
+
+.result .r-activity-info {
+    background-color: #E8E8E8;
+    color: #454545;
+    font-size: 11px;
+    margin-left: -13px;
+    margin-top:5px;
+    overflow: hidden;
+    padding: 5px 15px;
+    width: 196px;
+}
+
+
+.result .commentwrap
+{
+position:relative; width:200px;    
+}
+
+.result-large .commentwrap
+{
+width:400px;    
+}
+
+
+.result-large .song-tags
+{
+    padding:10px 0;
+}
+
+.song-tags .tag
+{
+    background-color: #FEF9C1; 
+    cursor:pointer; 
+    border: 0 solid #272700;  
+    line-height: 22px; 
+    padding: 2px 5px; 
+    margin:0 3px 3px 0px; 
+}
+
+.song-tags .tag:hover
+{
+    background-color:#ffff00;
+}
+
+.song-tags .tag a
+{
+    color:#1b1b1b;
+}
+
+.song-tags .tag:hover a
+{
+    color:#000000;
+}
+
+
+.result .song-tags .addtag
+{
+    font-weight:bold; color:#444;    
+}
+
+.result .song-tags .tag-box
+{
+    margin:10px 0;    
+}
+
+.result .song-tags .tag-box .bluebutton
+{
+    margin-top:5px; text-align:center; width:68px;
+}
+
+.result-large .song-tags .tag-box .bluebutton
+{
+    margin-bottom: -5px;
+    margin-top: 10px;
+    width: 154px;
+}
+
+.result .song-tags .tag-textbox
+{
+    width:200px;  
+}
+
+.result-large .song-tags .tag-textbox
+{
+    width:400px;   
+}
+
+.result .song-tags .help
+{
+    width:198px;   
+}
+
+.result-large .song-tags .help
+{
+    width:398px;   
+}
+
+.result .delete { display: none; background: url("../../content/icons/close.png") no-repeat scroll 0 0 transparent; position:absolute; margin-left:100px; }
+
+.result .delete:hover { display: none; background: url("../../content/icons/close.png") no-repeat scroll 0 -15px transparent; }
+
+.result .delete a { padding-left:15px; }
+
+.result .delete a:hover {background-color:transparent;}
+
+.result:hover .delete { display:block; } 
+
+
+
+.result:hover .infobox { display:block; } 
+
+
+
+
+.comment .likebox { display: none; position:absolute; right:-8px; z-index:11;}
+
+.comment:hover .likebox { display:block; } 
+
+
+
+.result-large .imagecontainer img 
+{ 
+    position:absolute;
+    z-index:1;
+}
+
+.result-large .imagecontainer .playlarge 
+{ 
+    position:absolute;
+    z-index:4; cursor:pointer;
+    width:100%;
+    height:100%;
+    background: url('../../content/icons/play.png') no-repeat scroll center center transparent;
+}
+
+
+.result .playquecontainer 
+{
+     -webkit-transition: all 0.6s ease;
+     -moz-transition:    all 0.6s ease;
+     -o-transition:      all 0.6s ease;
+     opacity: 0;
+     position:absolute;
+     z-index:5;
+     top:95px;
+     background-color:rgba(37, 41, 41, 0.644531);
+     border-radius: 3px 3px 3px 3px;
+     -moz-border-radius: 3px;
+     -webkit-border-radius: 3px;
+     -khtml-border-radius: 3px; /* for old Konqueror browsers */
+     padding: 8px 10px 5px 10px;
+     cursor:pointer;
+     width:13px;
+     height:18px;
+     overflow:hidden;
+}
+
+.result .playquecontainer:hover
+{
+     background-color:rgba(37, 41, 41, 0.9);
+     width:50px;
+}
+
+
+.result:hover .playquecontainer 
+{
+     opacity:1;
+}
+
+.result .play
+{
+    left:7px;
+}
+
+.result .que
+{
+    right:7px;
+}
+
+
+.result-large .que
+{
+    right: 30px;
+    top: 280px;
+}
+
+.result .playquecontainer span
+{
+     -webkit-transition: all 0.6s ease;
+     -moz-transition:    all 0.6s ease;
+     -o-transition:      all 0.6s ease;
+    color: White;
+    display: inline-block;
+    font-family: Helvetica;
+    font-weight: bold;
+    margin-left: 10px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+    top: 7px;
+}
+
+.result .playquecontainer:hover span
+{
+	opacity:1;
+}
+
+.result .playque .que { background: url("../../content/icons/que.png") no-repeat scroll 0 0 transparent;}
+
+.result:hover .playque { display:block; } 
+
+
+
+
+
+
+.result .linkscontainer 
+{ 
+      -webkit-transition: all 0.3s ease;
+  -moz-transition:    all 0.3s ease;
+  -o-transition:      all 0.3s ease;
+    background-color: white;
+    opacity: 0;
+    margin: -132px 0 0 -15px;
+    position: absolute;
+    text-align: center;
+    width: 230px;
+    z-index: 5;
+ }
+ 
+ .result .result-large-buttons 
+ {
+    padding:5px 0;
+    margin:0;
+    opacity:1;
+    position:relative;
+ }
+ 
+ .result .linkscontainer .Button
+{ 
+    -moz-transition: opacity 400ms ease-in 0ms;
+    border-right: 1px solid #CCCCCC;
+    color: white;
+    font-family: Helvetica,Arial,Sans-Serif;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 30px;
+    opacity: 0.8;
+    padding: 8px 6px;
+    text-decoration: none;
+    vertical-align: middle;
+ }
+ 
+ 
+  .result .linkscontainer .Button:last-child
+{ 
+    border-right: 0px solid #ccc;
+ }
+ 
+  .result .linkscontainer .Button:link
+{ 
+    color: #333;
+ }
+ 
+  .result .linkscontainer .Button:hover
+{ 
+    opacity: 1;
+    background-color:rgb(248,248,248);
+ }
+ 
+ 
+ .result:hover .linkscontainer
+{ 
+    opacity: 1;
+}
+
+
+
+.playall{
+     -webkit-transition: all 0.6s ease;
+     -moz-transition:    all 0.6s ease;
+     -o-transition:      all 0.6s ease;
+    border-left: 1px solid #AAAAAA;
+    border-right: 1px solid #AAAAAA;
+    color: #000000;
+    cursor: pointer;
+    font-weight: bold;
+    opacity: 0.3;
+    padding: 12px 10px 5px;
+}
+
+.playall span
+{
+    margin-left:7px;
+    position:relative;
+    top:-3px;
+}
+
+.playall:hover{
+    opacity: 0.8;
+    background: -moz-linear-gradient(top, #f8f8f8 0%, #eeeeee 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f8f8f8), color-stop(100%,#eeeeee)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #f8f8f8 0%,#eeeeee 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #f8f8f8 0%,#eeeeee 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #f8f8f8 0%,#eeeeee 100%); /* IE10+ */
+    background: linear-gradient(top, #f8f8f8 0%,#eeeeee 100%); /* W3C */
+}
+
+
+#shareit-box:hover .linkscontainer { display:inline-block; } 
+
+/*result css*/
+
+
+
+
+
+
+
+/*shareit start*/
+
+
+#shareit-box{
+    padding:15px;
+    margin:-15px 0 0 -15px;
+    position:absolute;
+    display:none;
+    z-index:12;
+    background-color: rgba(0,0,0,0.9);
+    }
+
+ 
+ 
+ #shareit-box-close {cursor:pointer; padding-left:15px; background: url("../../content/icons/close.png") no-repeat scroll 0 -15px transparent;}
+
+    #shareit-box-close:hover {background: url("../../content/icons/close.png") no-repeat scroll 0 0 transparent; }
+
+
+ 
+ 
+    #shareit-body {
+        width:200px; 
+        height:155px;
+        margin:0 auto;
+    }
+ 
+    #shareit-header 
+    {
+        float:right;
+        width:15px;
+        padding:4px;
+        }
+ 
+        #shareit-url {
+            height:50px;
+            text-align:center;
+            padding-top:8px;
+            margin-left:15px;
+        }
+ 
+            #shareit-url input.field{
+                height:26px;
+                background-color:#ffffff;
+                border:none; 
+                outline:none;
+                padding:0 5px 0 5px;
+                margin:3px auto;
+                font-size:11px;
+                width:140px;
+                
+        background: none repeat scroll 0 0 #F6F6F6;
+        border-color: #A4A4A4 #B9B9B9 #B9B9B9;
+        border-radius: 3px 3px 3px 3px;
+            -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -khtml-border-radius: 3px; /* for old Konqueror browsers */
+        border-right: 1px solid #B9B9B9;
+        border-style: solid;
+        border-width: 1px;
+            }
+ #shareit-icon 
+ {
+ 	padding-left:15px;
+ 	}
+ 	
+ 	
+ 	
+
+/* end shareit*/
+
+
+.BlackButton:link {
+   color: #fff;
+   }
+
+.BlackButton {
+   border-top: 1px solid #999999;
+   background: #2a2a2a;
+   background: -webkit-gradient(linear, left top, left bottom, from(#454545), to(#2a2a2a));
+   background: -webkit-linear-gradient(top, #454545, #2a2a2a);
+   background: -moz-linear-gradient(top, #454545, #2a2a2a);
+   background: -ms-linear-gradient(top, #454545, #2a2a2a);
+   background: -o-linear-gradient(top, #454545, #2a2a2a);
+   padding: 6.5px 6.5px;
+   -webkit-border-radius: 4px;
+   -moz-border-radius: 4px;
+   border-radius: 4px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+    border-color: #333333 #333333 #000000;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.45) inset;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   color: white;
+   font-size: 11px;
+   line-height:18px;
+   font-family: Helvetica, Arial, Sans-Serif;
+   font-weight:bold;
+   text-decoration: none;
+   vertical-align: middle;
+   margin:0px 2px;
+   }
+   
+.BlackButton:hover {
+   border-top-color: #2a2a2a;
+   background: #2a2a2a;
+   color: #ccc;
+   }
+.BlackButton:active {
+   border-top-color: #454545;
+   background: #454545;
+   }
+
+
+
+
+
+   .tBlackButton:link {
+   color: #fff;
+   }
+
+.tBlackButton {
+   border: 1px solid #ccc;
+   background: #000;
+   opacity:0.8;
+   padding: 6.5px;
+   -webkit-border-radius: 4px;
+   -moz-border-radius: 4px;
+   border-radius: 4px;
+   color: white;
+   font-size: 11px;
+   line-height:18px;
+   font-family: Helvetica, Arial, Sans-Serif;
+   font-weight:bold;
+   text-decoration: none;
+   vertical-align: middle;
+   margin:0px 2px;
+   
+    -webkit-transition: opacity 300ms ease-in 0ms; /* property duration timing-function delay */
+    -moz-transition: opacity 300ms ease-in 0ms;
+    -o-transition: opacity 300ms ease-in 0ms;
+    transition: opacity 300ms ease-in 0ms;
+   }
+   
+.tBlackButton:hover {
+   opacity: 1;
+   }
+
+
+   /*start modals*/
+   .ModalContainer {
+    bottom: -220px;
+    display: none;
+    left: -330px;
+    overflow: scroll;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 99999;
+        padding:0;
+    margin:0;
+}
+
+
+
+
+.overlay {
+    -moz-transition: all 0.3s ease-in-out 0s;
+    background: none repeat scroll 0 0 grey;
+    bottom: 0;
+    left: 0;
+    opacity: 0;
+    filter: alpha(opacity = 0);
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 0;
+    padding:0;
+    margin:0;
+}
+
+.visible .modal {
+    bottom: 50%;
+}
+
+.modal {
+    -moz-transition: all 0.3s ease-in-out 0s;
+    border: 6px solid #000;
+    border-color: rgba(0,0,0,0.7);
+    border-radius:5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px; /* for old Konqueror browsers */
+    bottom: -25%;
+    box-shadow: 0 2px 5px rgba(34, 25, 25, 0.5);
+	-webkit-box-shadow: 0 2px 5px rgba(34, 25, 25, 0.5);
+    left: 50%;
+    position: fixed;
+    z-index: 2;
+    background:#fff;
+}
+
+
+.modal .header
+{
+    border-bottom: 1px solid #ccc; background-color: #f5f5f5; padding:10px 20px;
+}
+
+.modal .header .mclose
+{
+    float:right;
+    width:16px; height:16px;
+    background: url(../../content/icons/mclose.png) no-repeat;
+    margin-top: 4px; 
+}
+
+.modal .body
+{
+    padding:20px;
+}
+
+
+.visible .overlay {
+    opacity: 0.7;
+    filter: alpha(opacity = 70);
+}
+
+
+
+
+   /*start Post Header Container*/
+   .PostHeaderContainer 
+   {
+    padding: 0;
+    margin: 0 auto; 
+    text-align: center;
+}
+
+.PostHeaderContainer li {
+    display: inline;
+    font-size: 13px;
+    position: relative;
+    list-style: none outside none;
+    margin:0;
+    padding:0;
+}
+
+.PostHeaderContainer li a{
+  color: #524D4D;
+}
+
+.PostHeaderContainer .submenu .nav {
+    padding-right: 11px;
+    position: relative;
+}
+
+.PostHeaderContainer .selected {
+    font-weight:bold;
+}
+
+.PostHeaderContainer .nav {
+    color: #524D4D;
+    display: inline-block;
+    position: relative;
+    height: 23px;
+    padding:9px 0 0;
+}
+
+.PostHeaderContainer .nav span {
+    background-image: url("http://passets-cdn.pinterest.com/images/DownArrowGray.png");
+    height: 3px;
+    right: 0;
+    top: 14px;
+    width: 5px;
+    position:absolute;
+}
+
+.PostHeaderContainer li ul {
+    left: -8px;
+    top: 23px;
+    z-index: 10;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.8);
+    border-top: 1px solid #CCCACA;
+    box-shadow: 0 2px 4px rgba(34, 25, 25, 0.5);
+	-webkit-box-shadow: 0 2px 4px rgba(34, 25, 25, 0.5);
+    display: none;
+    position: absolute;
+    width: 160px;
+    margin:0; padding:0;
+}
+
+
+
+
+
+#CategoriesDropdown {
+    width: 280px;
+}
+
+#CategoriesDropdown .SubmenuColumn {
+    float: left;
+    width: 140px;
+}
+
+.PostHeaderContainer li ul li:last-child a {
+    padding-bottom: 8px;
+}
+
+.PostHeaderContainer li ul li:first-child a {
+    padding-top: 8px;
+}
+
+.PostHeaderContainer li ul a {
+    color: #e5e5e5;
+    display: block;
+    font-weight: normal;
+    padding: 5px 10px;
+    font-size:13px;
+    text-align: left;
+    font-weight:bold;
+    text-shadow: 1px 1px 0px #000;
+}
+
+.PostHeaderContainer li ul a:hover {
+    background-color: #4f4f4f;
+    background-color: rgba(255,255,255,0.15);
+    color: #fff;
+    text-decoration:none;
+}
+
+.PostHeaderContainer .submenu:hover ul{
+    display:block;
+}
+
+
+
+
+/* head links is in the logonusercontrol*/
+
+ .headlinks
+    {
+	margin-right:-15px;
+	}
+
+     .headlinks .nav
+    {
+	display:inline;
+	}
+
+    .headlinks li
+    {
+	float:left;
+	padding-right:15px;
+	display:block;
+	}
+		 .headlinks li ul
+    {
+	left:12px;
+    top:29px;
+	}
+	 .headlinks ul li
+    {
+	float:inherit;
+	padding-right:0px;
+	display:inline;
+	height:auto;
+	}
+	
+	.headlinks .submenu
+	{
+	    height:29px;
+	}
+	
+	.headlinks li a
+    {
+    font-weight:bold;
+    font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
+	color: rgb(80, 80, 80);
+	}
+	
+		.headlinks li a:hover
+    {
+    font-weight:bold;
+    font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
+	color: black;
+	background-color:transparent;
+	}
+
+
+
+
+/*play list*/
+
+ .playlist-image {
+    float: left;
+    padding:0;
+    height: 90px;
+    width: 120px;
+    overflow:hidden;
+}
+
+.playlist-info {
+    margin-left: 130px;
+    position: relative;
+}
+
+
+
+/*cool scroll*/
+.mousescrollblack {
+    overflow: hidden;
+}
+
+.mousescrollblack:hover {
+    overflow-y: scroll;
+}
+
+
+/*cool scroll*/
+.mousescroll {
+    overflow: hidden;
+}
+
+.mousescroll:hover {
+    overflow-y: scroll;
+}
+
+
+/*User profile start*/
+.ProfileLinks span{
+ font-size:16px;
+ display:inline-block;
+ font-weight:bold;
+ width:30px;
+}
+
+
+.ProfileLinks a{
+ color:#777;
+ font-size:13px;
+}
+
+.ProfileLinks li{
+    padding: 5px 5px 5px 20px;
+    margin-left:-15px;
+    width: 205px;
+}
+
+.ProfileLinks li a:hover{
+  color: #069deb;
+}
+
+.ProfileLinks .select{
+    background: #f8f8f8; /* Old browsers */
+    background: -moz-linear-gradient(top, #f8f8f8 0%, #eeeeee 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f8f8f8), color-stop(100%,#eeeeee)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #f8f8f8 0%,#eeeeee 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #f8f8f8 0%,#eeeeee 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #f8f8f8 0%,#eeeeee 100%); /* IE10+ */
+    background: linear-gradient(top, #f8f8f8 0%,#eeeeee 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */border-bottom: 1px solid rgb(222, 222, 222);
+    border-bottom: 1px solid rgb(222, 222, 222);
+    border-top: 1px solid rgb(222, 222, 222);
+    cursor: default;
+}
+
+.ProfileLinks .select a{
+    color: #000;
+    font-weight:bold;
+}
+
+.ProfileLinks .select a:hover{
+    color: #000;
+}
+
+
+
+/*notifications start*/
+.notifications 
+{
+    float: left;
+    left: 25px;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    text-align: center;
+    top: -1px;
+}
+
+.notifications .nav{
+    background-color: rgb(240, 61, 37);
+    border: 1px solid rgb(192, 49, 30);
+    color: #FFFFFF;
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-size: 9px;
+    font-weight: bold;
+    padding: 2px 4px;
+    position: relative;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -khtml-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.notifications .nonotifications .nav{
+    background-color: rgb(240, 240, 240);
+    border: 1px solid #ccc;
+    color: #ccc;
+}
+
+
+.notifications .container{
+    margin-left: -8px;
+    margin-top: 10px;
+    z-index: 10;
+    background-color: #FFFFFF;
+    border-top: 1px solid #CCCACA;
+    box-shadow: 0 2px 4px rgba(34, 25, 25, 0.5);
+	-webkit-box-shadow: 0 2px 4px rgba(34, 25, 25, 0.5);
+    display: none;
+    position: absolute;
+    width: 330px;
+    padding:0;
+    margin: 14px 0 0 -300px;
+}
+
+.notifications ul li{
+     height:auto;
+     padding: 5px 10px;
+     border-bottom:1px solid rgb(230, 230, 230);
+    }
+.notifications ul li:last-child {
+    padding-bottom: 10px;
+    border-bottom:none;
+}
+
+.notifications ul li:first-child {
+    padding-top: 10px;
+}
+
+.notifications .nLink {
+    color: #524D4D;
+    display: block;
+    font-weight: normal;
+    text-align: left;
+}
+
+.notifications .ntName {
+    font-weight: bold;
+}
+
+
+.notifications .nTime 
+{
+    margin-top:2px;
+    color:rgb(128, 128, 128);
+    font-size:11px;
+}
+
+.notifications .unread{
+     background-color:#e8f0f6;
+    }
+
+
+.notifications ul li:hover {
+    background-color:#E1DFDF;
+    text-decoration:none;
+}
+
+.notifications ul li:hover a{
+    color:#333;
+}
+.notifications ul li:hover .nTime{
+    color:#333;
+}
+
+.notifications .linkcontainer{
+    padding-bottom:15px;
+}
+
+.notifications .linkcontainer:hover div{
+    display:block;
+}
+
+
+
+/*notifications end*/
+
+
+
+/*post css*/ 
+.facetiles .item-container
+{
+    display:inline;
+}
+
+.facetiles .item-container a
+{
+    float:left; margin:0 2px 2px 0; width:48px; height:48px;
+}
+
+.facetiles .next-button
+{
+   padding:4px 0 0 0; display:inline-block; vertical-align:middle; float:left; margin:0 2px 2px 0; width:48px; height:44px; text-align:center;
+}
+
+.facetiles .next-button a
+{
+font-weight:bold; color:rgb(80,80,80); font-size:16px; 
+}
+
+.facetiles .next-button:hover
+{
+    background-color:#1a1a1a;
+}
+
+.facetiles .next-button:hover a
+{
+    color:rgb(160,160,160);
+}
+
+/*post css end*/
+
+
+
+/* logon */
+
+#fbcon {
+    background: url("../../content/icons/cwf.png") no-repeat scroll 0px 0 transparent;
+    display: block;
+    height: 38px;
+    width: 255px;
+    margin:0 auto;
+}
+
+#fbcon:hover {
+background-position: 0 -50px;
+}
+
+#fbcon:active {
+background-position: 0 -100px;
+}
+
+/*log on end*/
+
+
+#MainLoading
+{
+        position: fixed;
+    text-align: center;
+    top: 30%;
+    width: 100%;
+       z-index: 100;
+    }
+
+#MainLoading div
+{
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    display: inline-block;
+    padding: 6px;
+    }
+    
+    #MainLoading span
+    {
+        color:White; font-weight:bold; font-family: Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif; 
+        }
+        
+    /* add box*/    
+    #p-t-box .textboxlist-autocomplete-result
+    {
+        height: 30px;
+        vertical-align:middle;
+    }
+   
+    #p-t-box .textboxlist-autocomplete-result span
+    {
+        position:relative;
+        top:3px;
+    }
+
+    #p-t-box .textboxlist-autocomplete-result img
+    {
+        float: left;
+        height: 27px;
+        margin: 2px;
+        padding-right: 8px;
+    }
+
+
+    /*buttons*/
+
+    .greybutton {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e0e0e0), color-stop(50%,#e0e0e0), color-stop(50%,#d3d3d3), color-stop(100%,#d3d3d3));
+    background: -moz-linear-gradient(center top, #e0e0e0 0%, #e0e0e0 50%, #d3d3d3 50%, #d3d3d3 100%);
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    padding: 5px 20px;
+    display: inline-block;
+    font-family: Helvetica Neue, Helvetica;
+    font-size: 16px;
+    color: #666666;
+    font-weight: bold;
+    border:1px solid #ccc;
+}
+.greybutton:hover {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f06196), color-stop(50%,#ef6196), color-stop(50%,#ee4d88), color-stop(100%,#ee4d88));
+    background: -moz-linear-gradient(center top, #f06196 0%, #ef6196 50%, #ee4d88 50%, #ee4d88 100%);
+    color: #FFFFFF;
+    border:1px solid #C94073;
+}
+
+
+.bluebutton {
+    background: #239acd;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#069eec), color-stop(50%,#069eec), color-stop(50%,#0591DA), color-stop(100%,#0591DA));
+    background: -moz-linear-gradient(center top, #069eec 0%, #069eec 50%, #0591DA 50%, #0591DA 100%);
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    text-shadow: 1px 1px 0px #4d4d4d;
+    padding: 5px 20px;
+    display: inline-block;
+    border-color: #0287Cd;
+    border-width: 1px;
+    border-style: solid;
+    font-family: Helvetica, Sans-Serif;
+    font-size: 16px;
+    color: #ffffff;
+    font-weight: bold;
+}
+.bluebutton:hover {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f06196), color-stop(50%,#ef6196), color-stop(50%,#ee4d88), color-stop(100%,#ee4d88));
+    background: -moz-linear-gradient(center top, #f06196 0%, #ef6196 50%, #ee4d88 50%, #ee4d88 100%);
+    color: #FFFFFF;
+    border-color: #ee4d88;
+}
+
+
+.greenbutton {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#63d773), color-stop(50%,#63d773), color-stop(50%,#37c353), color-stop(100%,#37c353));
+    background: -moz-linear-gradient(center top, #63d773 0%, #63d773 50%, #37c353 50%, #37c353 100%);
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    text-shadow: 1px 1px 0px #5c5a5c;
+    padding: 5px 20px;
+    display: inline-block;
+    border-color: #529f4e;
+    border-width: 1px;
+    border-style: solid;
+    font-family: Helvetica, Sans-Serif;
+    font-size: 16px;
+    color: #ffffff;
+    font-weight: bold;
+}
+.greenbutton:hover {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f06196), color-stop(50%,#ef6196), color-stop(50%,#ee4d88), color-stop(100%,#ee4d88));
+    background: -moz-linear-gradient(center top, #f06196 0%, #ef6196 50%, #ee4d88 50%, #ee4d88 100%);
+    color: #FFFFFF;
+    border-color: #ee4d88;
+}
+
+.darkgreybutton {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#3e3e3e), color-stop(50%,#3e3e3e), color-stop(50%,#262626), color-stop(100%,#262626));
+    background: -moz-linear-gradient(center top, #3e3e3e 0%, #3e3e3e 50%, #262626 50%, #262626 100%);
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    text-shadow: 1px 1px 0px #080808;
+    padding: 5px 20px;
+    display: inline-block;
+    border-color: #000000;
+    border-width: 1px;
+    border-style: solid;
+    font-family: Helvetica Neue, Helvetica, Sans-Serif;
+    font-size: 16px;
+    color: #ffffff;
+    font-weight: bold;
+}
+.darkgreybutton:hover {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f06196), color-stop(50%,#ef6196), color-stop(50%,#ee4d88), color-stop(100%,#ee4d88));
+    background: -moz-linear-gradient(center top, #f06196 0%, #ef6196 50%, #ee4d88 50%, #ee4d88 100%);
+    color: #FFFFFF;
+    border:1px solid #C94073;
+}
+
+.comment .darkgreybutton{
+	font-size: 10px;
+ 	font-weight: normal;
+ 	padding: 5px 10px;
+}
+
+/* subscription btn */
+
+.subscriptionbtn
+{
+    width:158px; 
+    text-align:center;
+}
+
+.subscriptionloading
+{
+    position:relative; top:6px; padding-bottom:6px; left:74px;
+}
+
+
+</style>
+
+</head>
+    
+<body style="margin:0px;">
+<div id="fb-root"></div>
+
+
+<div id="redbar" class="clearfix">
+<div id="pageHead" class="clearfix">
+
+<h1 id="pageLogo">
+<a title="Home" href="<%= Url.Action("Index","Home")%>" class="ajax"></a>
+</h1>
+
+
+
+<div id="headNav" class="clearfix">
+
+<!--- start search --->
+          
+             <% using (Html.BeginForm("Find", "Search", FormMethod.Post, new { id = "srch-form" }))
+                {%>
+
+<div id="SearchBox" style="width:300px; float:left; display:block">
+<div id="search" style="width:300px; position:absolute; float:left; margin-top:2px;"><input type="text" name="Simple" id="Simple"/></div>
+
+<div id="SearchBoxInfo" class="invisible">
+        <input type="hidden" value="everyone" id="SearchWhat" name="SearchWhat" />
+        <input type="hidden" value="now" id="time" name="time" />
+        <input type="hidden" value="popular" id="sort" name="sort" />
+</div>
+
+<div style="float:right; position:relative; left:-6px; top:8px; width:15px;">
+        <input type="submit" value="" class="button" id="srch-submit" style="background:transparent url(../../content/images/dropdown/searchb.png) no-repeat; width:15px; border:none; cursor:pointer;" />  
+ </div>
+ </div>
+
+ <% } %>
+ 
+
+
+        <!---- end search --->
+
+       <div style="float:right; display:block; margin-top:8px;"> 
+       <% Html.RenderPartial("LogOnUserControl"); %>
+       </div>
+</div>
+
+
+</div>
+</div>
+
+
+
+
+<div id="content" style="margin:0;" class="content clearfix">
+
+
+
+    <%if (!Request.IsAuthenticated)
+      { %>
+<div id="logon" style="background:transparent url(../../content/landingpix/ss3.jpg) no-repeat center; position:relative; top:44px; height:250px; float:left; width:100%;">
+<div id="calltoactioncontainer" style="position:relative; top:60px; text-align:center;">
+<div style="font:normal normal 600 64px/95% Open Sans, Helvetica Neue, Helvetica, Arial, Lucida Grande; letter-spacing:-2px; color:#ffffff;">DISCOVER MUSIC TOGETHER.</div>
+<div style="font:normal normal 100 20px/95% Open Sans, Helvetica Neue, Helvetica, Arial, Lucida Grande; letter-spacing:1px; color:#ffffff; margin-top:5px;">Sixtysongs is a place to share and discover music</div>
+<div id="connectbuttons" style="margin-top:30px;">
+<a href="<%= Url.Action("signup", "account")%>" class="bluebutton" style="border: 1px solid #0287CD;">Join Sixtysongs</a>
+<a href="<%= Url.Action("logon", "account")%>" class="greenbutton" style="border: 1px solid #529F4E;">Login</a>
+</div>
+</div>
+</div>
+    <%} %>
+
+
+<div id="contentCol" class="clearfix">
+<asp:ContentPlaceHolder ID="MainContent" runat="server" />
+</div>
+
+<div id="MainLoading" class="invisible"><div><span>Loading</span><img alt="loading" style=" margin-left: 8px;" src="../../content/icons/Loading_Sprite.gif" /></div></div>
+
+
+
+
+<div id="playerCol" style="background-color:#333333; position:fixed; width:0px;">
+<div id="playerwithoutplaylist">
+<div id="playertitle" style="font-family:Helvetica, Arial; font-weight:bold; font-size:16px; color:White; text-shadow: rgba(0, 0, 0, 0.496094) 0px 0.08em 0px;  padding:15px 10px; background-color:#1a1a1a; border-bottom:1px solid #000000;"></div>
+		<!-- player -->
+		<div id="player" class="clearfix" style="border-top:1px solid #151515;">
+			<div id="window">
+				<div id="flash" style="position:absolute; z-index:-1;"></div>
+                <div id="seekbar"><div id="elapsed"></div></div>
+                <div class="playcontrol"><span class="play playpause"></span><span class="previous"></span><span class="next"></span><span class="mute muteunmute"></span></div>
+			    <div class="playbuttons"> 
+            
+            <span>
+
+              <%if (Request.IsAuthenticated)
+              {%>
+            <a class="BlackButton CommentButton ajax" href="<%= Url.Action("0","Post")%>" data-pid="r.page.page_id" data-postid="r.pageOwner.PostId">
+            Comment
+            </a>
+
+            <a class="BlackButton LikeButton" href="javascript:void(0);" data-pid="r.page.page_id" data-postid="r.pageOwner.PostId" onclick="Like(this);">
+            Like
+            </a>
+
+            <a class="BlackButton RepostButton" href="javascript:void(0);" data-url="r.page.url" data-pid="r.page.page_id" data-postid="r.pageOwner.PostId" onclick="repost(this);">
+            Repost
+            </a>
+
+            <a class="BlackButton ShareButton" rel="shareit" href="javascript:void(0);" url="r.page.url">
+            Share
+            </a>
+                        <%}%>
+            </span>            
+            </div>
+
+            </div>
+		</div>
+
+		<!--/player -->
+        </div>
+<div class="playlistcontainer">
+		<div class="playlistheader">Playlist <a class="bin"></a></div>
+        <div id="playList" style="z-index:1;" class="mousescroll"></div>
+</div>
+        
+</div>
+
+</div>
+
+
+
+
+
+
+<div id="shareit-box" style="position:absolute;">
+<div id="shareit-header">
+<span id="shareit-box-close"></span>
+</div>
+    
+
+    <div id="shareit-body" class="clearfix">
+        <div id="shareit-blank"></div>
+        <div id="shareit-url"><input type="text" value="" name="shareit-field" id="shareitfield" class="field"/></div>
+       
+       <div id="socialloading" style="background:url('../../Content/icons/loading29.gif') no-repeat center center; width:130; height:90px; display:none;" ></div>
+       
+        <div id="shareit-icon" class="clearfix" >
+        
+        <iframe id="shareframe" src="" width="110" height="98" scrolling="no" frameborder="0" class="invisible" style="margin:-2px 0 0 0;"></iframe>
+
+        </div>
+    </div>
+    </div>
+
+
+
+
+    
+
+
+  <% if(Request.IsAuthenticated){ %>
+
+  <!-- this div is used when a user posts a new song. its a container for the error or the actual new post-->
+  <div id="NewPost"></div> 
+
+
+
+<div id="AddModal" class="ModalContainer">
+
+<div class="modal">
+<div class="header">
+<a href="javascript:void(0);" onclick="ModalHide('AddModal'); ResetAddModal();" class="mclose"></a>
+<h2>Add</h2>
+</div>
+<div class="body">
+<% Html.RenderPartial("ShareBox"); %>
+</div>
+</div>
+
+<div class="overlay"></div>
+
+
+</div>
+
+
+
+
+<div id="SettingsModal" class="ModalContainer">
+
+<div class="modal">
+<div class="header">
+<a href="javascript:void(0);" onclick="ModalHide('SettingsModal');" class="mclose"></a>
+<h2>Settings</h2>
+</div>
+<div id="SettingsDiv" class="body">
+<%Html.RenderPartial("SettingsBox"); %>
+</div>
+</div>
+
+<div class="overlay"></div>
+
+
+</div>
+
+
+
+
+<div id="DeletePostModal" class="ModalContainer">
+
+<<div class="modal">
+<div class="header">
+<a href="javascript:void(0);" onclick="ModalHide('DeletePostModal');" class="mclose"></a>
+<h2>Delete Post</h2>
+</div>
+<div id="Div3" class="body" style="width:400px;">
+Are you sure you want to delete this post?
+<%= Html.Hidden("DeletePostId") %>
+<div style="margin-top:15px; text-align:right;"><a href="javascript:void(0);" onclick="var postid = $('#DeletePostId').val(); var url = '<%= Url.Action("DeletePost", "Ajax", new {}) %>'+'/'+postid.toString(); $.ajax({url: url,type: 'GET',dataType: 'html',success: function (result) {}}); ModalHide('DeletePostModal'); $('#r'+postid.toString()).fadeOut('slow');" class="bluebutton">Delete Post</a></div>
+</div>
+</div>
+
+<div class="overlay"></div>
+
+
+</div>
+
+
+
+<div id="DeleteCommentModal" class="ModalContainer">
+
+<<div class="modal">
+<div class="header">
+<a href="javascript:void(0);" onclick="ModalHide('DeleteCommentModal');" class="mclose"></a>
+<h2>Delete Comment</h2>
+</div>
+<div id="Div4" class="body" style="width:400px;">
+Are you sure you want to delete this comment?
+<%= Html.Hidden("DeleteCommentId") %>
+<div style="margin-top:15px; text-align:right;"><a href="javascript:void(0);" onclick="var commentid = $('#DeleteCommentId').val(); var url = '<%= Url.Action("DeleteComment", "Ajax", new {}) %>'+'/'+commentid.toString(); $.ajax({url: url,type: 'GET',dataType: 'html',success: function (result) {}}); ModalHide('DeleteCommentModal'); $('#c'+commentid.toString()).fadeOut('slow');" class="bluebutton">Delete Comment</a></div>
+</div>
+</div>
+
+<div class="overlay"></div>
+
+
+</div>
+
+
+
+
+<div id="DeleteAccountModal" class="ModalContainer">
+
+<<div class="modal">
+<div class="header">
+<a href="javascript:void(0);" onclick="ModalHide('DeleteAccountModal');" class="mclose"></a>
+<h2>Delete your Account</h2>
+</div>
+<div id="Div2" class="body" style="width:400px;">
+This is fully permanent and cannot be undone, which means that everything you shared will be lost forever and you won't be able to come back and listen to songs with everyone. If you really, really want to do this, click "Delete Account." We're sorry to see you go.
+<div style="margin-top:15px; text-align:right;"><%= Html.ActionLink("Delete Account", "DeleteAccount", "Account", new { check = Membership.GetUser().ProviderUserKey }, new { Class = "bluebutton", onclick = "FBlogout();" })%> </div>
+
+</div>
+</div>
+
+<div class="overlay"></div>
+
+
+</div>
+
+
+<%} %>
+
+<!-- Google Analytics-->
+    <script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-10879285-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+
+<div style="display:none; margin:0px;"> <asp:ContentPlaceHolder ID="LeftContent" runat="server" /></div>
+
+
+</body>
+</html>
+
+

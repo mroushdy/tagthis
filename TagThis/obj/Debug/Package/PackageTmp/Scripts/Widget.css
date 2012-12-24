@@ -1,0 +1,67 @@
+﻿ul.tagchain {
+line-height:19px;
+margin:0;
+overflow:hidden;
+padding:0 0 0 8px;
+text-align:right;
+text-decoration: none;
+}
+ul.tagchain li {
+display:inline !important;
+font-size:90%;
+}
+
+a.usertag {
+-moz-background-clip:border;
+-moz-background-inline-policy:continuous;
+-moz-background-origin:padding;
+background:transparent url(../../Content/images/Results/del_sprite_tags.png) no-repeat scroll 100% 0;
+color:#FFFFFF;
+cursor:pointer;
+display:block;
+float:left;
+font-size:100%;
+margin:-3px 10px 0 0;
+min-height:17px;
+min-width:20px;
+padding-right:17px;
+text-decoration: none;
+}
+a.usertag:hover {
+background-position:100% -80px;
+background-color:#FFFFFF;
+cursor:pointer;
+text-decoration:none;
+}
+
+.meta
+{
+clear:left;
+color:#ABC4E1;
+display:block;
+margin:2px 0;
+padding-top:3px;
+position:relative;
+text-decoration: none;
+}
+
+a.usertag span {
+-moz-background-clip:border;
+-moz-background-inline-policy:continuous;
+-moz-background-origin:padding;
+background:#F2F2F2;
+color:#000000;
+cursor:pointer;
+display:block;
+float:left;
+min-height:15px;
+padding:0px 5px 0 10px;
+text-decoration: none;
+}
+a.usertag:hover span {
+-moz-background-clip:border;
+-moz-background-inline-policy:continuous;
+-moz-background-origin:padding;
+background:#ED1C24;
+color:#FFFFFF;
+}

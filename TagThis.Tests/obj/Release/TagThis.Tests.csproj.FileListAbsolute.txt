@@ -1,0 +1,10 @@
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\bin\Release\TagThis.Tests.dll.config
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\bin\Release\TagThis.Tests.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\bin\Release\TagThis.Tests.pdb
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\bin\Release\TagThis.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\bin\Release\HtmlAgilityPack.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\bin\Release\Recaptcha.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\bin\Release\TagThis.pdb
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\obj\Release\TagThis.Tests.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\obj\Release\TagThis.Tests.pdb

@@ -1,0 +1,152 @@
+﻿
+a:link
+{
+    text-decoration: none;
+}
+a:visited
+{
+    text-decoration: none;
+}
+a:hover
+{
+    color: #000000;
+}
+.clicked
+{
+    color: #000000;
+}
+a:active
+{
+    color: #12eb87;
+}
+
+
+/* HEADINGS   
+----------------------------------------------------------*/
+h1, h2, h3, h4, h5, h6
+{
+    font-size: 1.5em;
+    color: #000;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+h1
+{
+   font-family:  'Helvetica Neue', Helvetica, Arial, sans-serif;
+font-size:30px;
+font-weight:bold;
+letter-spacing:-1px;
+    margin:0;
+}
+
+h2 {
+font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;
+font-size:20px;
+font-weight:normal;
+color:#000000;
+margin:0;
+
+}
+
+
+
+
+.error
+{
+    color:Red;
+}
+
+.field-validation-error
+{
+    color: #ff0000;
+}
+
+.input-validation-error
+{
+    border: 1px solid #ff0000;
+    background-color: #ffeeee;
+}
+
+.validation-summary-errors
+{
+    font-weight: bold;
+    color: #ff0000;
+}
+
+img
+{  border-style: none;
+}
+
+/*                                Not defaults sarts
+-------------------------------------------------------*/
+
+
+.form_tags { margin-bottom: 10px;}
+			
+			/* Setting widget width example */
+.form_tags .textboxlist, #form_friends .textboxlist { width: 400px; }
+			
+			/* Preloader for autocomplete */
+.textboxlist-loading { background: url('../content/close.gif') no-repeat 380px center; }
+			
+			/* Autocomplete results styling */
+#form_friends .textboxlist-autocomplete-result { overflow: hidden; zoom: 1; }
+#form_friends .textboxlist-autocomplete-result img { float: left; padding-right: 10px; }
+			
+
+
+
+  /* Invite css*/
+#invite-method-container {
+width:80%;
+margin:auto;
+}
+#invite-method-container ul {
+display:inline;
+}
+#invite-method-container ul li {
+padding:0.7em 0.6em 20px 0;
+list-style-type:none;
+display:inline;
+}
+.selected {
+background-color:#F1F1F1;
+}
+#invite-method-container ul li a.tab {
+color:inherit;
+cursor:pointer;
+font-size:122%;
+padding:0.6em 0.6em 0.6em 47px;
+text-decoration:none;
+background-color:Transparent;
+}
+
+.invite {
+-moz-background-clip:border;
+-moz-background-inline-policy:continuous;
+-moz-background-origin:padding;
+background:transparent url(../../Content/icons/external_service_icons.png) no-repeat scroll 4px 6px;
+}
+
+.gmail {
+-moz-background-clip:border;
+-moz-background-inline-policy:continuous;
+-moz-background-origin:padding;
+background:transparent url(../../Content/icons/external_service_icons.png) no-repeat scroll 4px -102px;
+}
+
+.facebook {
+-moz-background-clip:border;
+-moz-background-inline-policy:continuous;
+-moz-background-origin:padding;
+background:transparent url(../../content/icons/external_service_icons.png) no-repeat scroll 4px -30px;
+}
+
+.msnlive {
+-moz-background-clip:border;
+-moz-background-inline-policy:continuous;
+-moz-background-origin:padding;
+background:transparent url(../../content/icons/external_service_icons.png) no-repeat scroll 4px -176px;
+}
+
+

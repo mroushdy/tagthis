@@ -1,0 +1,13 @@
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\bin\Debug\TagThis.Tests.dll.config
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\bin\Debug\TagThis.Tests.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\bin\Debug\TagThis.Tests.pdb
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\bin\Debug\TagThis.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\bin\Debug\TagThis.pdb
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\obj\Debug\TagThis.Tests.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\obj\Debug\TagThis.Tests.pdb
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\bin\Debug\HtmlAgilityPack.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\bin\Debug\Recaptcha.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\bin\Debug\Google.GData.Extensions.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\bin\Debug\Google.GData.Contacts.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\bin\Debug\Google.GData.Client.dll

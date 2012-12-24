@@ -1,0 +1,387 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A1C32A8C-0BEF-4275-B650-7807D38E2FBC}</ProjectGuid>
+    <ProjectTypeGuids>{F85E285D-A4E0-4152-9332-AB1D724D3325};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TagThis</RootNamespace>
+    <AssemblyName>TagThis</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <UseIISExpress>true</UseIISExpress>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Embedly, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\embedly\src\sample\bin\Release\Embedly.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook, Version=5.4.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Facebook.5.4.1.0\lib\net40-client\Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook.Web, Version=5.4.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FacebookWeb.5.4.1.0\lib\net40\Facebook.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook.Web.Mvc, Version=5.4.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FacebookWebMvc.5.4.1.0\lib\net40\Facebook.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.GData.Client, Version=1.9.0.0, Culture=neutral, PublicKeyToken=04a59ca9b0273830, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Visual Studio 2010\Projects\Music\Music\bin\Google.GData.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.GData.Contacts, Version=1.4.0.2, Culture=neutral, PublicKeyToken=7e065189dd4b982f, processorArchitecture=MSIL" />
+    <Reference Include="Google.GData.Extensions, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0b4c5df2ebf20876, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Visual Studio 2010\Projects\Music\Music\bin\Google.GData.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.GData.YouTube, Version=1.9.0.0, Culture=neutral, PublicKeyToken=af04a32718ae8833, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Visual Studio 2010\Projects\Music\Music\bin\Google.GData.YouTube.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.3.0.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL" />
+    <Reference Include="ImageResizer, Version=3.0.10.740, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Resizer3-alpha-10-min-Jun-16-2011\ImageResizer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Recaptcha, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Recaptcha.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Abstractions">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Routing">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web.WebPages" />
+    <Reference Include="System.Web.Helpers" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActionFilters\AjaxViewSelectorAttribute.cs" />
+    <Compile Include="ActionFilters\CaptchaValidatorAttribute.cs" />
+    <Compile Include="ActionFilters\iAuthenticateAttribute.cs" />
+    <Compile Include="Content\PeopleSuggestHandler.ashx.cs">
+      <DependentUpon>PeopleSuggestHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Content\TagSuggestHandler.ashx.cs">
+      <DependentUpon>TagSuggestHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AddController.cs" />
+    <Compile Include="Controllers\AjaxController.cs" />
+    <Compile Include="Controllers\AjaxPaginationHandlerController.cs" />
+    <Compile Include="Controllers\CommentsController.cs" />
+    <Compile Include="Controllers\Contacts.cs" />
+    <Compile Include="Controllers\EmbedlyController.cs" />
+    <Compile Include="Controllers\GetThumbController.cs" />
+    <Compile Include="Controllers\GotoController.cs" />
+    <Compile Include="Controllers\HelpController.cs" />
+    <Compile Include="Controllers\InvitationsController.cs" />
+    <Compile Include="Controllers\InviteController.cs" />
+    <Compile Include="Controllers\m0123989967Controller.cs" />
+    <Compile Include="Controllers\PostController.cs" />
+    <Compile Include="Controllers\SimilarController.cs" />
+    <Compile Include="Controllers\SocialFrameController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JsController.cs" />
+    <Compile Include="Controllers\lightboxController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Controllers\Spider.cs" />
+    <Compile Include="Controllers\utils.cs" />
+    <Compile Include="Controllers\WindowsLiveLogin.cs" />
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="HtmlHelpers\AjaxExtensions.cs" />
+    <Compile Include="HtmlHelpers\AutoCompleteExtensions.cs" />
+    <Compile Include="HtmlHelpers\CaptchaHelper.cs" />
+    <Compile Include="HtmlHelpers\ResourceTracker.cs" />
+    <Compile Include="HtmlHelpers\ScriptExtensions.cs" />
+    <Compile Include="Models\SearchRepository.cs" />
+    <Compile Include="Models\TagRepository.cs" />
+    <Compile Include="Models\TagThis.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TagThis.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\Shared\lightbox.Master.cs">
+      <DependentUpon>lightbox.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Shared\lightbox.Master.designer.cs">
+      <DependentUpon>lightbox.Master</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Data\ASPNETDB.MDF">
+    </Content>
+    <Content Include="App_Data\ASPNETDB_log.ldf">
+      <DependentUpon>ASPNETDB.MDF</DependentUpon>
+    </Content>
+    <Content Include="App_Data\TagThis.mdf">
+    </Content>
+    <Content Include="App_Data\TagThis_log.ldf">
+      <DependentUpon>TagThis.mdf</DependentUpon>
+    </Content>
+    <Content Include="Content\videoplayer.css" />
+    <Content Include="Default.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="HtmlAgilityPack.dll" />
+    <Content Include="Content\close.gif" />
+    <Content Include="Scripts\jquery.coolscroll.js" />
+    <Content Include="Scripts\GrowingInput.js" />
+    <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.4.1.js" />
+    <Content Include="Scripts\jquery-1.4.1.min.js" />
+    <Content Include="Scripts\jquery.tipsy.js" />
+    <Content Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.videoplayer.js" />
+    <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
+    <Content Include="Scripts\MicrosoftMvcValidation.js" />
+    <Content Include="Scripts\TextboxList.Autocomplete.Binary.js" />
+    <Content Include="Scripts\TextboxList.Autocomplete.css" />
+    <Content Include="Scripts\TextboxList.Autocomplete.js" />
+    <Content Include="Scripts\TextboxList.css" />
+    <Content Include="Scripts\TextboxList.js" />
+    <Content Include="Scripts\tipsy.css" />
+    <Content Include="Views\Account\AlreadyConnected.aspx" />
+    <Content Include="Views\Account\boom.aspx" />
+    <Content Include="Views\Account\Import.aspx" />
+    <Content Include="Views\Account\People.aspx" />
+    <Content Include="Views\Account\Settings.aspx" />
+    <Content Include="Views\Account\Signup.aspx" />
+    <Content Include="Views\Account\test.aspx" />
+    <Content Include="Views\Embedly\Index.aspx" />
+    <Content Include="Views\Home\Facebook.aspx" />
+    <Content Include="Views\Home\Test.aspx" />
+    <Content Include="Views\lightbox\Index.aspx" />
+    <Content Include="Views\Shared\FirstTime.ascx" />
+    <Content Include="Views\Shared\Pagination.ascx" />
+    <Content Include="Views\Shared\PaginationPage.ascx" />
+    <Content Include="Views\Shared\Post.ascx" />
+    <Content Include="Views\Shared\AjaxContainer.aspx" />
+    <Content Include="Views\Shared\comment.ascx" />
+    <Content Include="Views\Shared\CommentRating.ascx" />
+    <Content Include="Views\Shared\Comments.ascx" />
+    <Content Include="Views\Shared\Copy of LogOn.aspx" />
+    <Content Include="Views\Shared\explore.ascx" />
+    <Content Include="Views\Shared\Genres.ascx" />
+    <Content Include="Views\Shared\LogOn.aspx" />
+    <Content Include="Views\Shared\notifications.ascx" />
+    <Content Include="Views\Shared\ProfileUserList.ascx" />
+    <Content Include="Views\Shared\ResultsPage.ascx" />
+    <Content Include="Views\Shared\SettingsBox.ascx" />
+    <Content Include="Views\Shared\ShareBox.ascx" />
+    <Content Include="Views\Shared\ShareBoxReturn.ascx" />
+    <Content Include="Views\Shared\User.ascx" />
+    <Content Include="Views\Shared\UserFaceTile.ascx" />
+    <Content Include="Views\Shared\UserList.ascx" />
+    <Content Include="Views\Shared\UserProfileInfo.ascx" />
+    <Content Include="Views\Shared\ViewUserControl1.ascx" />
+    <Content Include="Views\Similar\Index.aspx" />
+    <Content Include="Views\SocialFrame\Index.aspx" />
+    <Content Include="Web.config" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Scripts\jquery-1.3.2.js" />
+    <Content Include="Scripts\jquery-1.3.2.min.js" />
+    <Content Include="Scripts\jquery-1.3.2-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.3.2.min-vsdoc.js" />
+    <Content Include="Scripts\MicrosoftAjax.js" />
+    <Content Include="Scripts\MicrosoftAjax.debug.js" />
+    <Content Include="Scripts\MicrosoftMvcAjax.js" />
+    <Content Include="Scripts\MicrosoftMvcAjax.debug.js" />
+    <Content Include="Views\Account\ChangePassword.aspx" />
+    <Content Include="Views\Account\ChangePasswordSuccess.aspx" />
+    <Content Include="Views\Shared\LogOn1.aspx" />
+    <Content Include="Views\Account\Register.aspx" />
+    <Content Include="Views\Home\About.aspx" />
+    <Content Include="Views\Shared\Error.aspx" />
+    <Content Include="Views\Shared\LogOnUserControl.ascx" />
+    <Content Include="Views\Shared\Site.Master" />
+    <Content Include="Views\Shared\Web.config" />
+    <Content Include="Scripts\jquery-1.4.4.js" />
+    <Content Include="Scripts\jquery-1.4.4-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.4.4.min.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fbchannel.ashx" />
+    <Content Include="Content\PeopleSuggestHandler.ashx" />
+    <None Include="Models\TagThis.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>TagThis.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="packages.config" />
+    <Content Include="Views\Shared\FacebookInit.ascx" />
+    <Content Include="Views\Shared\FacebookInit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\autocomplete" />
+    <Content Include="Content\AjaxControlToolkit\3.0.20820.16598\3.0.20820.0\AjaxControlToolkit.Animation.AnimationBehavior.js" />
+    <Content Include="Content\AjaxControlToolkit\3.0.20820.16598\3.0.20820.0\AjaxControlToolkit.Animation.Animations.js" />
+    <Content Include="Content\AjaxControlToolkit\3.0.20820.16598\3.0.20820.0\AjaxControlToolkit.AutoComplete.AutoCompleteBehavior.js" />
+    <Content Include="Content\AjaxControlToolkit\3.0.20820.16598\3.0.20820.0\AjaxControlToolkit.Common.Common.js" />
+    <Content Include="Content\AjaxControlToolkit\3.0.20820.16598\3.0.20820.0\AjaxControlToolkit.Compat.Timer.Timer.js" />
+    <Content Include="Content\AjaxControlToolkit\3.0.20820.16598\3.0.20820.0\AjaxControlToolkit.ExtenderBase.BaseScripts.js" />
+    <Content Include="Content\AjaxControlToolkit\3.0.20820.16598\3.0.20820.0\AjaxControlToolkit.PopupExtender.PopupBehavior.js" />
+    <Content Include="Content\icons\._delete.gif" />
+    <Content Include="Content\icons\._tick.gif" />
+    <Content Include="Content\icons\external_service_icons.png" />
+    <Content Include="Content\icons\loading29.gif" />
+    <Content Include="Content\TagSuggestHandler.ashx" />
+    <None Include="Content\icons\.DS_Store" />
+    <None Include="Models\TagThis.dbml.layout">
+      <DependentUpon>TagThis.dbml</DependentUpon>
+    </None>
+    <Content Include="Scripts\SearchJavascript.js" />
+    <Content Include="Scripts\Widget.css" />
+    <Content Include="Views\Account\ChangeEmail.aspx" />
+    <Content Include="Views\Account\ChangeEmailSuccess.aspx" />
+    <Content Include="Views\Account\Forgot.aspx" />
+    <Content Include="Views\Account\PassResetError.aspx" />
+    <Content Include="Views\Account\ResetPassword.aspx" />
+    <Content Include="Views\Account\UnSuccessfull.aspx" />
+    <Content Include="Views\Account\Welcome.aspx" />
+    <Content Include="Views\Account\wLogOn.aspx" />
+    <Content Include="Views\Add\Index.aspx" />
+    <Content Include="Views\Comments\comment.ascx" />
+    <Content Include="Views\Comments\Index.aspx" />
+    <Content Include="Views\Help\AdvancedSearch.aspx" />
+    <Content Include="Views\Help\Bookmarklet.aspx" />
+    <Content Include="Views\Help\FAQ.aspx" />
+    <Content Include="Views\Help\Press.aspx" />
+    <Content Include="Views\Help\Privacy.aspx" />
+    <Content Include="Views\Help\Widget.aspx" />
+    <Content Include="Views\Invitations\EmailInvites.aspx" />
+    <Content Include="Views\Invitations\gmail.aspx" />
+    <Content Include="Views\Invitations\index.aspx" />
+    <Content Include="Views\Invitations\InviteButton.ascx" />
+    <Content Include="Views\Invitations\InviteMethods.ascx" />
+    <Content Include="Views\Invitations\Live.aspx" />
+    <Content Include="Views\Invitations\facebook.aspx" />
+    <Content Include="Views\lightbox\Faves.aspx" />
+    <Content Include="Views\lightbox\Error.aspx" />
+    <Content Include="Views\lightbox\Finish.aspx" />
+    <Content Include="Views\m0123989967\Index.aspx" />
+    <Content Include="Views\Shared\LBfaves.ascx" />
+    <Content Include="Views\Shared\SubscriptionButton.ascx" />
+    <Content Include="Views\Search\Index.aspx" />
+    <Content Include="Views\Shared\RatingControlls.ascx" />
+    <Content Include="Views\Shared\ResultSingle.ascx" />
+    <Content Include="Views\Shared\ResultsPartial.ascx" />
+    <Content Include="Views\Search\Results.aspx" />
+    <Content Include="Views\Shared\lightbox.Master" />
+    <Content Include="Views\Shared\TagSubmitForm.ascx" />
+    <Content Include="Views\Shared\TagSubmitResults.ascx" />
+    <Content Include="Views\Users\UserNotFound.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\images\comments\" />
+    <Folder Include="Content\images\dropdown\" />
+    <Folder Include="Content\images\slideshow\" />
+    <Folder Include="Content\landingpix\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target> -->
+  <Target Name="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(ProjectDir)\..\$(ProjectName)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>1949</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:80/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

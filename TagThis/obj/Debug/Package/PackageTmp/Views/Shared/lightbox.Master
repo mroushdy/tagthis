@@ -1,0 +1,37 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="lightbox.master.cs" Inherits="TagThis.Views.Shared.lightbox" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title><asp:ContentPlaceHolder ID="TitleContent" runat="server" /></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    		<style type="text/css" media="screen">
+			.Red {background-color:#E5001C; color:#E5001C;  height:20;}
+			.Title {color: #0099FF; font-size: 13px; margin-left: 10px; margin-right: 10px; text-align:left;}
+			.Desc {color: #000000; margin-left: 10px; margin-right: 10px; text-align:left;}
+			.help {background-color:#EdEdEd; border: 1px solid #CCCCCC; font-size: 12px; color: #666666; text-align:left; font-family: Arial, Helvetica, sans-serif; width: 398px;}
+			.Box {
+	        font-family: Arial, Helvetica, sans-serif;
+	        font-size: 12px;
+	        width: 400px;
+	        background-color: #EdEdEd;
+	       /* border: 1px solid 0099FF;*/
+                    }
+		</style>
+</head>
+<body>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="8%"><img src="../../Content/TAGTHIS.png" width="176" height="56" /></td>
+    <td width="92%"> <div class="Red">a</div></td>
+  </tr>
+</table>
+    <div>
+        <asp:ContentPlaceHolder ID="Main" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+</body>
+</html>

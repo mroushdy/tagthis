@@ -1,0 +1,224 @@
+/* player */
+#player {
+	position:relative; /* offset parent */
+	width:100%;
+    height:338px;
+}
+
+#window {
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:338px;
+	background-color:#000;	
+}
+
+
+
+#seekbar {
+	position:absolute;
+	bottom:0px;
+	height:10px;
+	width:100%;
+	background-color:#1a1a1a;
+	opacity:0.6;
+	cursor:pointer;
+	z-index:10;
+}
+
+#elapsed{
+	width:0;
+	height:100%;
+	background-color:#1fa2f6;
+	border-right:1px solid #49AFF0;
+}
+
+#mute-btn {
+	position:absolute;
+	bottom:0px;
+	right:0px;
+	width:40px;
+	height:40px;
+	background:#000 url(../images/mute-btn.gif) 0px 0px no-repeat;
+	cursor:pointer;
+}
+
+/*play list*/
+
+
+    .playlistitem
+    {
+    margin:10px;
+    height:90px;
+    background-color:#1a1a1a;
+    padding: 3px 5px;
+    cursor:pointer;
+    position:relative;
+    }    
+    
+    .playlistitem .remove
+    {
+    background: url(../../content/icons/removefromque.png) no-repeat;
+    display: none;
+    height: 18px;
+    position: absolute;
+    left: -4px;
+    top: -4px;
+    width: 18px;
+    z-index: 10000;
+    }
+    
+    .playlistitem:hover .remove
+    {
+    display:block;
+    }
+    
+.playing
+{
+    background-color: rgb(0, 107, 178);
+    background-image: -webkit-gradient(linear, 0 0, 0 100, from(rgb(1, 145, 241)), to(rgb(0, 107, 178)));
+    background-image: -moz-linear-gradient(center top , #0191F1 0pt, #006BB2 100%);
+    background: -ms-linear-gradient(center top , #0191F1 0pt, #006BB2 100%);
+    background: -o-linear-gradient(center top , #0191F1 0pt, #006BB2 100%);
+    background-color:#000000;
+    }
+    
+    .playing .v-title
+    {
+       color:#ffffff;
+        }
+    
+    
+
+.playcontrol  .play{
+	background:url('../../content/icons/playcontrols.png') no-repeat 0 0;
+}
+
+.playcontrol  .play:hover{
+	background:url('../../content/icons/playcontrols.png') no-repeat 0 -50px;
+}
+
+
+.playcontrol .pause{
+	background:url('../../content/icons/playcontrols.png') no-repeat -248px 0;
+}
+
+.playcontrol .pause:hover{
+	background:url('../../content/icons/playcontrols.png') no-repeat -248px -50px;
+}
+
+.playcontrol .previous{
+	background:url('../../content/icons/playcontrols.png') no-repeat -50px 0;
+}
+
+.playcontrol .previous:hover{
+	background:url('../../content/icons/playcontrols.png') no-repeat -50px -50px;
+}
+
+.playcontrol .next{
+	background:url('../../content/icons/playcontrols.png') no-repeat -100px 0;
+}
+
+.playcontrol .next:hover{
+	background:url('../../content/icons/playcontrols.png') no-repeat -100px -50px;
+}
+ 
+ 
+.playcontrol .mute{
+	background:url('../../content/icons/playcontrols.png') no-repeat -150px 0;
+}
+
+.playcontrol .mute:hover{
+	background:url('../../content/icons/playcontrols.png') no-repeat -150px -50px;
+}
+
+.playcontrol .unmute{
+	background:url('../../content/icons/playcontrols.png') no-repeat -200px 0;
+}
+
+.playcontrol .unmute:hover{
+	background:url('../../content/icons/playcontrols.png') no-repeat -200px -50px;
+}
+    
+ .playcontrol
+ {
+    position:absolute;
+	bottom:20px;
+    width:200px;
+    left:50%; margin-left:-100px;
+	z-index:10;
+	display:none;
+ }
+ 
+ .playcontrol span
+ {
+     padding:50px 50px 0 0;
+     font-size:0;
+     cursor:pointer;
+ }
+ .playcontrol .muteunmute
+ {
+	 padding: 50px 48px 0 0;
+ }
+
+/*safari fix*/
+	@media screen and (-webkit-min-device-pixel-ratio:0){
+	 .playcontrol span
+	 {
+		padding:49px 50px 0 0;
+	 }
+	
+	.playcontrol .muteunmute
+	 {
+		 padding: 49px 48px 0 0;
+	 }
+	
+	}
+     
+ 
+ #window:hover .playcontrol{
+	display:block;
+}
+
+
+ .playbuttons
+ {
+    position:absolute;
+	top:20px;
+    text-align:center;
+	z-index:10;
+	width:100%;
+	display:none;
+ }
+ 
+ .playbuttons span
+ {
+  display:inline-block;
+ }
+   
+   
+  #window:hover .playbuttons{
+	display:block;
+}
+
+
+.playlistheader
+{
+    padding:14px 0; font-family:Helvetica, Arial; font-weight:bold; font-size:18px; color:#ffffff; text-shadow: rgba(0, 0, 0, 0.597656) 0px 1px 3px; background: url(../../content/images/nav_bg.png) repeat-x rgb(34, 34, 34); -webkit-box-shadow: rgb(68, 68, 68) 4px 4px 5px; box-shadow: 4px 4px 5px #444444; border-top:1px solid #000000; text-align:center; vertical-align:middle; position:relative;
+    }
+ 
+.playlistheader .bin
+{
+    position:absolute;
+    right:10px;
+    width:15px;
+    height:18px;
+    background: url(../../content/icons/bin.png) no-repeat;
+    display: none;
+    }
+    
+    .playlistcontainer:hover .playlistheader .bin
+    {
+        display:inline-block;
+    }

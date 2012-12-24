@@ -1,0 +1,13 @@
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis\bin\TagThis.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis\bin\TagThis.pdb
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis\bin\HtmlAgilityPack.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis\bin\Recaptcha.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis\bin\System.Web.Abstractions.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis\bin\System.Web.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis\bin\System.Web.Mvc.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis\bin\System.Web.Routing.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis\bin\AjaxControlToolkit.pdb
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis\bin\System.Web.Mvc.xml
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis\obj\Release\TagThis.dll
+C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis\obj\Release\TagThis.pdb

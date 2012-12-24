@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="c2628829-a0ec-47c9-b343-f6085936fe0f" name="Administrator@MARIOEC8A 2009-10-12 16:44:23" runUser="MARIOEC8A\Administrator" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2006">
+  <TestRunConfiguration name="Default Run Configuration" id="d07d739c-52c9-4401-b52e-646a3e00f214">
+    <Deployment runDeploymentRoot="C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TestResults\Administrator_MARIOEC8A 2009-10-12 16_44_23">
+      <DeploymentItem filename="C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis\bin\TagThis.dll" />
+    </Deployment>
+    <Hosts skipUnhostableTests="false" />
+    <TestTypeSpecific />
+  </TestRunConfiguration>
+  <ResultSummary outcome="Failed">
+    <Counters total="2" executed="2" passed="1" error="0" failed="1" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+  <Times creation="2009-10-12T16:44:23.4218750+03:00" queuing="2009-10-12T16:44:38.2343750+03:00" start="2009-10-12T16:44:38.7343750+03:00" finish="2009-10-12T16:44:40.4375000+03:00" />
+  <TestDefinitions>
+    <UnitTest name="Index" storage="c:\documents and settings\administrator\my documents\visual studio 2008\projects\tagthis\tagthis.tests\bin\debug\tagthis.tests.dll" id="a1ea91ac-cdfc-19f7-2c0d-66f9fb7c408f">
+      <Css projectStructure="" iteration="" />
+      <Owners>
+        <Owner name="" />
+      </Owners>
+      <Execution id="da4e09f6-c335-4693-9c90-1bbda6477dc6" />
+      <TestMethod codeBase="C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\bin\Debug\TagThis.Tests.dll" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TagThis.Tests.Controllers.HomeControllerTest, TagThis.Tests" name="Index" />
+    </UnitTest>
+    <UnitTest name="About" storage="c:\documents and settings\administrator\my documents\visual studio 2008\projects\tagthis\tagthis.tests\bin\debug\tagthis.tests.dll" id="d02bc9fe-ae15-e20a-5d83-944adaa1075e">
+      <Css projectStructure="" iteration="" />
+      <Owners>
+        <Owner name="" />
+      </Owners>
+      <Execution id="0d03477b-c427-496a-96e5-8e56f046f854" />
+      <TestMethod codeBase="C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\bin\Debug\TagThis.Tests.dll" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TagThis.Tests.Controllers.HomeControllerTest, TagThis.Tests" name="About" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <TestEntries>
+    <TestEntry testId="a1ea91ac-cdfc-19f7-2c0d-66f9fb7c408f" executionId="da4e09f6-c335-4693-9c90-1bbda6477dc6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d02bc9fe-ae15-e20a-5d83-944adaa1075e" executionId="0d03477b-c427-496a-96e5-8e56f046f854" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <Results>
+    <UnitTestResult executionId="da4e09f6-c335-4693-9c90-1bbda6477dc6" testId="a1ea91ac-cdfc-19f7-2c0d-66f9fb7c408f" testName="Index" computerName="MARIOEC8A" duration="00:00:00.3488803" startTime="2009-10-12T16:44:39.0312500+03:00" endTime="2009-10-12T16:44:39.9218750+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d">
+      <Output>
+        <ErrorInfo>
+          <Message>Test method TagThis.Tests.Controllers.HomeControllerTest.Index threw exception:  System.NullReferenceException: Object reference not set to an instance of an object..</Message>
+          <StackTrace>    at TagThis.Controllers.HomeController.Index() in C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis\Controllers\HomeController.cs:line 33
+   at TagThis.Tests.Controllers.HomeControllerTest.Index() in C:\Documents and Settings\Administrator\My Documents\Visual Studio 2008\Projects\TagThis\TagThis.Tests\Controllers\HomeControllerTest.cs:line 22
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0d03477b-c427-496a-96e5-8e56f046f854" testId="d02bc9fe-ae15-e20a-5d83-944adaa1075e" testName="About" computerName="MARIOEC8A" duration="00:00:00.0822998" startTime="2009-10-12T16:44:39.9375000+03:00" endTime="2009-10-12T16:44:40.0312500+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d">
+      <Output>
+      </Output>
+    </UnitTestResult>
+  </Results>
+</TestRun>
